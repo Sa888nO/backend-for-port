@@ -1,0 +1,33 @@
+services:
+
+  backend: 
+    build: ./backend
+    container_name: backend
+    restart: always
+    ports:
+      - 4444:4444
+    depends_on:
+      postgres:
+        condition: service_healthy
+    develop:
+      watch:
+        - path: ./backend
+          action: rebuild
+
+  postgres:
+    container_name: postgres
+    image: postgres:17.5
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: port_db
+    volumes:
+      - ./volume/postgres/data:/var/lib/postgresql/data
+    ports: 
+      - 5555:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d port_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
