@@ -1,23 +1,17 @@
-import {
-    Table,
-    Column,
-    Model,
-    DataType,
-    BelongsTo,
-    ForeignKey,
-} from "sequelize-typescript";
-import { User } from "./user";
+import { Table, Column, Model, DataType, BelongsTo, ForeignKey } from 'sequelize-typescript';
+import { User } from './user';
 
 export interface iClient {
     id?: number;
     user_id: number;
-    full_name?: string;
-    phone?: string;
+    name?: string;
+    surname?: string;
+    is_verified: boolean;
 }
 
 @Table({
     timestamps: false,
-    tableName: "clients",
+    tableName: 'clients',
 })
 export class Client extends Model<iClient> {
     @BelongsTo(() => User)
@@ -34,5 +28,5 @@ export class Client extends Model<iClient> {
     surname!: string;
 
     @Column({ type: DataType.BOOLEAN, allowNull: false })
-    is_verified!: string;
+    is_verified!: boolean;
 }

@@ -1,12 +1,12 @@
-import { Router } from "express";
-import AuthController from "../controllers/auth";
-import authMiddleware from "../middlewares/auth";
+import { Router } from 'express';
+import AuthController from '../controllers/auth';
+import authMiddleware from '../middlewares/auth';
 
 const authRouter = Router();
 
-authRouter.post("/auth/login", AuthController.login);
-authRouter.post("/auth/registration", AuthController.registration);
-authRouter.get("/auth/test", AuthController.test);
+authRouter.post('/auth/login', AuthController.login);
+authRouter.post('/auth/registration', AuthController.registration);
+authRouter.get('/auth/verification', AuthController.verification);
 // authRouter.get(
 //     "/auth/user",
 //     authMiddleware([, "admin", "client"]),
