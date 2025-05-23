@@ -14,6 +14,7 @@ class UserService {
                     role: user.role,
                     name: client ? client?.name : null,
                     surname: client ? client.surname : null,
+                    is_verified: client ? client.is_verified : null,
                 };
             }
             return { id: user.id, email: user.email, role: user.role };
