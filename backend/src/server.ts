@@ -29,7 +29,9 @@ app.use(ErrorMiddleware);
 
 const PORT = process.env.PORT || 3000;
 
-databaseConnection().then(() => seedAdmin());
+databaseConnection().then(() => {
+    seedAdmin();
+});
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
