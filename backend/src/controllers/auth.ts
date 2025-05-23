@@ -17,9 +17,9 @@ class AuthController {
     }
     async registration(req: Request, res: Response, next: NextFunction) {
         try {
-            const { email, password } = req.body;
+            const { email, password, name, surname } = req.body;
             console.log(email, password);
-            const result = await authService.Registration(email, password);
+            const result = await authService.Registration(email, password, name, surname);
             console.log(result);
             if (result.error) return res.status(400).json({ message: result.error });
             return res.json(result);

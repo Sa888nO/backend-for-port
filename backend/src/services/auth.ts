@@ -4,7 +4,7 @@ import { Token } from '../database/models/token';
 import mailService from './mail';
 import { uuid } from 'uuidv4';
 import dayjs from 'dayjs';
-import jwt from 'jsonwebtoken';
+import jwt, { verify } from 'jsonwebtoken';
 
 const SECRET_KEY = '123456789'; // @TODO USE ENV
 
@@ -25,7 +25,7 @@ class AuthService {
         }
         return { error: 'неизвестная роль' };
     }
-    async Registration(email: string, password: string) {
+    async Registration(email: string, password: string, name: string, surname: string) {
         const existingUser = await User.findOne({ where: { email } });
         if (existingUser) return { error: 'Пользователь уже существует' };
 
@@ -35,8 +35,8 @@ class AuthService {
         // Создание клиента
         const client = await Client.create({
             user_id: user.id,
-            name: '',
-            surname: '',
+            name: name || '',
+            surname: surname || '',
             is_verified: false,
         });
 
@@ -58,6 +58,14 @@ class AuthService {
         await mailService.SendVerificationEmail(email, verificationLink);
 
         return { message: 'Письмо с подтверждением отправлено на ваш email' };
+    }
+    validateAccessToken(token: string) {
+        try {
+            const data = verify(token, String(SECRET_KEY));
+            return data;
+        } catch (e) {
+            return null;
+        }
     }
 }
 
