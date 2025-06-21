@@ -1,9 +1,10 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import App from "./App.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import { ConfigProvider } from "antd";
+import { Login, Registration } from "./pages";
+import "./index.css";
 
 const queryClient = new QueryClient();
 
@@ -20,7 +21,11 @@ createRoot(document.getElementById("root")!).render(
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <Routes>
-            <Route path="/z" element={<App />} />
+            <Route path="auth">
+              <Route index element={<Navigate to="login" />} />
+              <Route path="login" element={<Login />} />
+              <Route path="registration" element={<Registration />} />
+            </Route>
           </Routes>
         </BrowserRouter>
       </QueryClientProvider>
