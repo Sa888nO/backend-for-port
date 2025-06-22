@@ -1,4 +1,4 @@
-import { IdcardOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
+import { CreditCardOutlined, IdcardOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 import { useMutation } from '@tanstack/react-query';
 import { Button, Form, Input, notification } from 'antd';
 import { RegistrationApi, iRegistration } from '../api/registration';
