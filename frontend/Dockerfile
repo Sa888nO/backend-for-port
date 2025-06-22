@@ -2,7 +2,7 @@
 FROM node:18-alpine AS builder
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN yarn install --frozen-lockfile --production=false
+RUN yarn install
 COPY . .
 RUN yarn build
 FROM nginx:1.25-alpine
