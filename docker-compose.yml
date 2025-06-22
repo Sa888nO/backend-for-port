@@ -6,10 +6,6 @@ services:
     ports:
       - 80:80
     restart: always
-    develop:
-      watch:
-        - path: ./frontend
-          action: rebuild
 
   backend:
     build: ./backend
