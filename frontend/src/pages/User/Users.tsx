@@ -73,7 +73,7 @@ export const Users = () => {
                         <Link to={String(id)}>
                             <Button icon={<EditOutlined />} />
                         </Link>
-                        <Button danger icon={<DeleteOutlined />} />
+                        <Button loading danger icon={<DeleteOutlined />} />
                     </div>
                 );
             },

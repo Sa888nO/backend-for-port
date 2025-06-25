@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import Cookies from 'universal-cookie';
 import { jwtDecode } from 'jwt-decode';
 import { useUser } from '../contexts/UserContext';
+import { UserApi } from '../api/user';
 
 const Loading = () => (
     <div className="tw-flex tw-flex-1 tw-w-full tw-items-center tw-justify-center tw-gap-4 tw-flex-col">
@@ -29,8 +30,8 @@ export const GetCurrentUser = () => {
     const { user_id } = jwtDecode(token) as Token;
     const navigate = useNavigate();
     const { data, isLoading, isError } = useQuery({
-        queryKey: ['users'],
-        queryFn: UsersApi,
+        queryKey: ['currentUser'],
+        queryFn: () => UserApi(user_id),
     });
 
     useEffect(() => {
@@ -42,11 +43,10 @@ export const GetCurrentUser = () => {
 
     useEffect(() => {
         if (!user_id || !data) return;
-        const user = data.data.filter((user) => user.id === user_id)[0];
         setUser({
-            id: user.id,
-            name: user.role === 'admin' ? 'Admin' : `${user.name} ${user.surname}`,
-            role: user.role,
+            id: data.data.id,
+            name: data.data.role === 'admin' ? 'Admin' : `${data.data.name} ${data.data.surname}`,
+            role: data.data.role,
         });
     }, [data]);
 
