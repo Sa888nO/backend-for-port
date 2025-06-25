@@ -21,6 +21,35 @@ class UserController {
             next(e);
         }
     }
+
+    async createUser(req: Request, res: Response, next: NextFunction) {
+        try {
+            const result = await userService.createUser(req.body);
+            return res.json(result);
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    async getUser(req: Request, res: Response, next: NextFunction) {
+        try {
+            const id = Number(req.params.id);
+            const result = await userService.getUserById(id);
+            return res.json(result);
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    async updateUser(req: Request, res: Response, next: NextFunction) {
+        try {
+            const id = Number(req.params.id);
+            const result = await userService.updateUser(id, req.body);
+            return res.json(result);
+        } catch (e) {
+            next(e);
+        }
+    }
 }
 
 export default new UserController();
