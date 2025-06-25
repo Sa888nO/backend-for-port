@@ -24,7 +24,7 @@ type Token = {
 const cookies = new Cookies();
 
 export const GetCurrentUser = () => {
-    const { user, setUser } = useUser();
+    const { setUser } = useUser();
     const token = cookies.get('token');
     const { user_id } = jwtDecode(token) as Token;
     const navigate = useNavigate();
