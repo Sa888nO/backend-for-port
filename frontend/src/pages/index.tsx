@@ -1,2 +1,3 @@
-export { Login } from "./Login";
-export { Registration } from "./Registration";
+export { Login } from './Auth/Login';
+export { Registration } from './Auth/Registration';
+export { Profile } from './Profile';

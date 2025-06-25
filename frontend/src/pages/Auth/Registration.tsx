@@ -1,7 +1,7 @@
 import { CreditCardOutlined, IdcardOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 import { useMutation } from '@tanstack/react-query';
 import { Button, Form, Input, notification } from 'antd';
-import { RegistrationApi, iRegistration } from '../api/registration';
+import { RegistrationApi, iRegistration } from '../../api/registration';
 import { Link } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { useForm } from 'antd/es/form/Form';

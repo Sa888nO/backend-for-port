@@ -1,7 +1,7 @@
 import { CreditCardOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
-import { iLogin, LoginApi } from '../api/login';
+import { iLogin, LoginApi } from '../../api/login';
 import { notification } from 'antd';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'antd/es/form/Form';
