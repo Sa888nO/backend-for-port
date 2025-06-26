@@ -76,6 +76,9 @@ export const Login = () => {
                 <Link to="/auth/registration" className="tw-w-1/2 tw-max-w-80">
                     <Button className="tw-w-full">Зарегистрироваться</Button>
                 </Link>
+                <Link to="/auth/recovery" className="tw-w-1/2 tw-max-w-80">
+                    <Button className="tw-w-full">Восстановить пароль</Button>
+                </Link>
             </div>
         </>
     );

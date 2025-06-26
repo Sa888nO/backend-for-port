@@ -80,6 +80,9 @@ export const Registration = () => {
                 <Link to="/auth/login" className="tw-w-1/2 tw-max-w-80">
                     <Button className="tw-w-full">У меня уже есть аккаунт</Button>
                 </Link>
+                <Link to="/auth/recovery" className="tw-w-1/2 tw-max-w-80">
+                    <Button className="tw-w-full">Восстановить пароль</Button>
+                </Link>
             </div>
         </>
     );

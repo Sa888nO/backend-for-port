@@ -15,6 +15,7 @@ import { CreateRequests } from './pages/Request/CreateRequest';
 import { Users } from './pages/User/Users';
 import { CreateUser } from './pages/User/CreateUser';
 import { EditUser } from './pages/User/EditUser';
+import { Recovery } from './pages/Auth/Recovery';
 
 const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ createRoot(document.getElementById('root')!).render(
                             <Route index element={<Navigate to="login" />} />
                             <Route path="login" element={<Login />} />
                             <Route path="registration" element={<Registration />} />
+                            <Route path="recovery" element={<Recovery />} />
                         </Route>
                         <Route path="lk" element={<IsAuthWrapper />}>
                             <Route element={<GetCurrentUser />}>

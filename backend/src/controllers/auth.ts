@@ -51,7 +51,7 @@ class AuthController {
             const result = await authService.recoveryPassword(email);
             if (result.error) return res.status(400).json({ error: result.error });
 
-            return res.json({ message: 'Новый пароль отправлен на вашу почту' });
+            return res.json({ message: 'Пароль отправлен на вашу почту' });
         } catch (e) {
             next(e);
         }
