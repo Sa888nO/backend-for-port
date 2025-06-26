@@ -1,4 +1,4 @@
-import { FileAddOutlined, HomeOutlined, IdcardOutlined, LogoutOutlined, QrcodeOutlined, SolutionOutlined, TeamOutlined } from '@ant-design/icons';
+import { FileAddOutlined, IdcardOutlined, LogoutOutlined, QrcodeOutlined, SolutionOutlined, TeamOutlined } from '@ant-design/icons';
 import { Breadcrumb, Button, Tooltip } from 'antd';
 import { Header } from 'antd/es/layout/layout';
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
@@ -56,11 +56,6 @@ export const PageWrapper = () => {
             <div className="tw-flex tw-flex-1 tw-overflow-hidden">
                 <div className="tw-w-10 tw-py-2 tw-border-r tw-flex tw-justify-between tw-items-center tw-flex-col tw-flex-shrink-0">
                     <nav className="tw-flex tw-flex-col tw-gap-2">
-                        <Tooltip overlay="Главная" placement="right">
-                            <NavLink to={'/lk/main'}>
-                                <Button icon={<HomeOutlined />} />
-                            </NavLink>
-                        </Tooltip>
                         <Tooltip overlay="Профиль" placement="right">
                             <NavLink to={'/lk/profile'}>
                                 <Button icon={<IdcardOutlined />} />

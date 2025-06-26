@@ -42,6 +42,20 @@ class AuthController {
             next(e);
         }
     }
+
+    async recovery(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { email } = req.body;
+            if (!email) return res.status(400).json({ error: 'Email обязателен' });
+
+            const result = await authService.recoveryPassword(email);
+            if (result.error) return res.status(400).json({ error: result.error });
+
+            return res.json({ message: 'Новый пароль отправлен на вашу почту' });
+        } catch (e) {
+            next(e);
+        }
+    }
 }
 
 export default new AuthController();

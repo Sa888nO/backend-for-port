@@ -42,6 +42,18 @@ class MailService {
 
         return { message: 'Email успешно подтверждён' };
     }
+
+    async sendRecoveryEmail(target: string, password: string) {
+        await transporter.sendMail({
+            from: 'vladikavkaz.port.service@gmail.com',
+            to: target,
+            subject: 'Восстановление пароля',
+            html: `
+                <h2>Ваш пароль от аккаунта:</h2>
+                <p>${password}</p>
+            `,
+        });
+    }
 }
 
 export default new MailService();

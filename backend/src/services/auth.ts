@@ -67,6 +67,14 @@ class AuthService {
             return null;
         }
     }
+
+    async recoveryPassword(email: string) {
+        const user = await User.findOne({ where: { email } });
+        if (!user) return { error: 'Пользователь не найден' };
+        const password = user.password;
+        await mailService.sendRecoveryEmail(email, password);
+        return { message: 'Информация отправлена на указанную почту' };
+    }
 }
 
 export default new AuthService();

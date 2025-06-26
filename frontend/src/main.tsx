@@ -5,7 +5,6 @@ import { ConfigProvider } from 'antd';
 import { Login, Profile, Registration } from './pages';
 import './index.css';
 import { IsNotAuthWrapper } from './wrappers/IsNotAuthWrapper';
-import { Main } from './pages/Main';
 import { IsAuthWrapper } from './wrappers/IsAuthWrapper';
 import { PageWrapper } from './wrappers/PageWrapper';
 import { UserProvider } from './contexts/UserContext';
@@ -14,6 +13,8 @@ import { Requests } from './pages/Request/Requests';
 import { EditRequests } from './pages/Request/EditRequest';
 import { CreateRequests } from './pages/Request/CreateRequest';
 import { Users } from './pages/User/Users';
+import { CreateUser } from './pages/User/CreateUser';
+import { EditUser } from './pages/User/EditUser';
 
 const queryClient = new QueryClient();
 
@@ -32,8 +33,7 @@ createRoot(document.getElementById('root')!).render(
                         <Route path="lk" element={<IsAuthWrapper />}>
                             <Route element={<GetCurrentUser />}>
                                 <Route element={<PageWrapper />}>
-                                    <Route index element={<Navigate to="main" />} />
-                                    <Route path="main" element={<Main />} />
+                                    <Route index element={<Navigate to="requests" />} />
                                     <Route path="profile" element={<Profile />} />
                                     <Route path="requests">
                                         <Route index element={<Requests />} />
@@ -42,8 +42,14 @@ createRoot(document.getElementById('root')!).render(
                                     </Route>
                                     <Route path="users">
                                         <Route index element={<Users />} />
-                                        {/* <Route path=":id" element={<Edit />} /> */}
-                                        {/* <Route path="new" element={<CreateUser />} /> */}
+                                        <Route path=":id" element={<EditUser />} />
+                                        <Route path="new" element={<CreateUser />} />
+                                    </Route>
+                                    <Route path="profile" element={<Profile />} />
+                                    <Route path="requests">
+                                        <Route index element={<Requests />} />
+                                        <Route path=":id" element={<EditUser />} />
+                                        <Route path="new" element={<CreateUser />} />
                                     </Route>
                                 </Route>
                             </Route>

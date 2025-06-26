@@ -1,15 +1,26 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { UsersApi } from '../../api/users';
 import { Button, Spin, Table, Tag } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, PlusOutlined, UserAddOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import { deleteUserApi } from '../../api/deleteUser';
+
+const Delete = ({ id, refetch }: { id: string | number; refetch: any }) => {
+    const { mutate: deleteUser, isPending } = useMutation({
+        mutationFn: (id: string | number) => deleteUserApi(id),
+        onSuccess: () => refetch(),
+    });
+    return <Button loading={isPending} danger onClick={() => deleteUser(id)} icon={<DeleteOutlined />} />;
+};
 
 export const Users = () => {
-    const { data, isLoading } = useQuery({
+    const { data, isLoading, refetch } = useQuery({
         queryKey: ['users'],
         queryFn: UsersApi,
+        refetchOnMount: true,
     });
+
     if (isLoading)
         return (
             <div className="tw-flex tw-items-center tw-justify-center tw-h-full tw-flex-1 tw-flex-col tw-gap-4">
@@ -73,11 +84,23 @@ export const Users = () => {
                         <Link to={String(id)}>
                             <Button icon={<EditOutlined />} />
                         </Link>
-                        <Button loading danger icon={<DeleteOutlined />} />
+                        <Delete refetch={refetch} id={id} />
                     </div>
                 );
             },
         },
     ];
-    return <Table dataSource={data.data} columns={columns} pagination={false} bordered scroll={{ x: true }} />;
+    return (
+        <div className="tw-flex tw-flex-col tw-gap-2">
+            <div>
+                <Link to={'new'}>
+                    <Button>
+                        <UserAddOutlined />
+                        Добавить пользователя
+                    </Button>
+                </Link>
+            </div>
+            <Table dataSource={data.data} columns={columns} pagination={false} bordered scroll={{ x: true }} />
+        </div>
+    );
 };
