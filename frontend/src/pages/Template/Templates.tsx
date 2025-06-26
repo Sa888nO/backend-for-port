@@ -5,10 +5,11 @@ import { Button, Spin, Table, Tag } from 'antd';
 import { DeleteOutlined, EditOutlined, FileAddOutlined, UserAddOutlined } from '@ant-design/icons';
 import { deleteUserApi } from '../../api/deleteUser';
 import { ColumnsType } from 'antd/es/table';
+import { deleteTemplate } from '../../api/deleteTemplate';
 
 const Delete = ({ id, refetch }: { id: string | number; refetch: any }) => {
     const { mutate: deleteUser, isPending } = useMutation({
-        mutationFn: (id: string | number) => deleteUserApi(id),
+        mutationFn: (id: string | number) => deleteTemplate(id),
         onSuccess: () => refetch(),
     });
     return <Button loading={isPending} danger onClick={() => deleteUser(id)} icon={<DeleteOutlined />} />;

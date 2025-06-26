@@ -78,6 +78,7 @@ class TemplateService {
         });
     }
     async createByTemplate(id: string, schema: Record<string, string>) {
+        // console.log(schema);
         const template = await Template.findOne({
             where: { id },
         });

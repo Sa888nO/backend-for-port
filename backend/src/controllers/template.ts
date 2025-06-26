@@ -58,7 +58,9 @@ class TemplateController {
     }
     async createByTemplate(req: Request, res: Response, next: NextFunction) {
         try {
+            // console.log(req.body);
             const { id, schema } = req.body;
+            // console.log(schema);
             const filePath = await templateService.createByTemplate(id, schema);
             const absolutePath = path.resolve(filePath);
             fs.access(absolutePath, fs.constants.F_OK, (err) => {
