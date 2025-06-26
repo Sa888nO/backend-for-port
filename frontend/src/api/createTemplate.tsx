@@ -13,7 +13,7 @@ export type oUsers = {
 }[];
 const cookies = new Cookies();
 
-export const TemplatesApi = (): Promise<AxiosResponse<oUsers>> => {
+export const createTemplateApi = (formData: FormData): Promise<AxiosResponse<oUsers>> => {
     const token = cookies.get('token');
-    return Api.get(`/templates`, { headers: { Authorization: `Bearer ${token}` } });
+    return Api.post(`/template`, formData, { headers: { Authorization: `Bearer ${token}` } });
 };

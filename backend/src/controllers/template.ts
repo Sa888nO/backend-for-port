@@ -72,6 +72,15 @@ class TemplateController {
             next(e);
         }
     }
+    async deleteTemplate(req: Request, res: Response, next: NextFunction) {
+        try {
+            const id = req.params.id;
+            const result = await templateService.deleteTemplate(id);
+            return res.json(result);
+        } catch (e) {
+            next(e);
+        }
+    }
 }
 
 export default new TemplateController();

@@ -12,7 +12,7 @@ type FormValues = { email: string; password: string; role: string; name?: string
 export const EditUser = () => {
     const { id } = useParams();
     const { data, isLoading } = useQuery({
-        queryKey: ['userForEdit'],
+        queryKey: ['userProfile'],
         queryFn: () => UserApi(String(id)),
         staleTime: 0,
     });

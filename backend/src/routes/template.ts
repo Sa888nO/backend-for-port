@@ -15,5 +15,6 @@ templateRouter.post('/template', authMiddleware(['admin', 'client']), upload.sin
 templateRouter.get('/templates', authMiddleware(['admin', 'client']), templateController.getAllTemplates);
 templateRouter.get('/template/:id', authMiddleware(['admin', 'client']), templateController.getTemplate);
 templateRouter.post('/template/create', authMiddleware(['admin', 'client']), templateController.createByTemplate);
+templateRouter.delete('/template/:id', authMiddleware(['admin', 'client']), templateController.deleteTemplate);
 
 export default templateRouter;

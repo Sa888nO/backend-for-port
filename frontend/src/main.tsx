@@ -16,6 +16,8 @@ import { Users } from './pages/User/Users';
 import { CreateUser } from './pages/User/CreateUser';
 import { EditUser } from './pages/User/EditUser';
 import { Recovery } from './pages/Auth/Recovery';
+import { Templates } from './pages/Template/Templates';
+import { CreateTemplate } from './pages/Template/CreateTemplate';
 
 const queryClient = new QueryClient();
 
@@ -50,8 +52,13 @@ createRoot(document.getElementById('root')!).render(
                                     <Route path="profile" element={<Profile />} />
                                     <Route path="requests">
                                         <Route index element={<Requests />} />
-                                        <Route path=":id" element={<EditUser />} />
-                                        <Route path="new" element={<CreateUser />} />
+                                        {/* <Route path=":id" element={<EditUser />} />
+                                        <Route path="new" element={<CreateUser />} /> */}
+                                    </Route>
+                                    <Route path="templates">
+                                        <Route index element={<Templates />} />
+                                        {/* <Route path=":id" element={<EditUser />} /> */}
+                                        <Route path="new" element={<CreateTemplate />} />
                                     </Route>
                                 </Route>
                             </Route>

@@ -123,6 +123,25 @@ class TemplateService {
 
         return newFilePath;
     }
+    async deleteTemplate(id: Template['id']) {
+        const user = await Template.findByPk(id);
+        if (!user) {
+            return { error: 'Шаблон не найден' };
+        }
+        // if (user.role === 'client') {
+        //     const client = await Client.findOne({ where: { user_id: user.id } });
+        //     // Удалить связанные токены клиента
+        //     await Token.destroy({ where: { client_id: client?.id } });
+
+        //     // Удалить запись клиента
+        //     await Client.destroy({ where: { user_id: id } });
+        // }
+
+        // Удалить пользователя
+        await Template.destroy({ where: { id } });
+
+        return { message: 'Шаблон успешно удален' };
+    }
 }
 
 export default new TemplateService();
