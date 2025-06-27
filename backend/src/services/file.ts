@@ -28,7 +28,14 @@ class FileService {
             name: sanitizedFileName,
             path_to_file: sanitizedFilePath,
         });
+
         return newFile.save();
+    }
+
+    async getAllFiles() {
+        // Получаем все записи файлов из базы данных
+        const files = await File.findAll();
+        return files;
     }
 }
 

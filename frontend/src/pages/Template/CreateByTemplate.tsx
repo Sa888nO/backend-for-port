@@ -15,7 +15,17 @@ export const CreateByTemplate = () => {
     });
     const [form] = Form.useForm();
     const { mutate, isPending } = useMutation({
-        mutationFn: (props: any) => createByTemplateApi(props),
+        mutationFn: (props: any) =>
+            createByTemplateApi(props).then((v) => {
+                const url = window.URL.createObjectURL(v.data);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'document.docx';
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                window.URL.revokeObjectURL(url);
+            }),
     });
     if (isLoading)
         return (

@@ -13,7 +13,7 @@ export type oUsers = {
 }[];
 const cookies = new Cookies();
 
-export const createByTemplateApi = (props: any): Promise<AxiosResponse<oUsers>> => {
+export const createByTemplateApi = (props: any): Promise<AxiosResponse<Blob>> => {
     const token = cookies.get('token');
     return Api.post(`/template/create`, props, { headers: { Authorization: `Bearer ${token}` }, responseType: 'blob' });
 };

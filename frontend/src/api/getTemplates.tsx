@@ -3,17 +3,18 @@ import { Api } from './index';
 import { AxiosResponse } from 'axios';
 
 // export type iUsers = { email: string; password: string };
-export type oUsers = {
+export interface ITemplate {
     id: number;
-    email: string;
-    role: 'client' | 'admin';
-    name?: string;
-    surname?: string;
-    is_verified?: boolean;
-}[];
+    name: string;
+    schema: Record<string, string>;
+    file_id: number;
+    createdAt: string;
+    updatedAt: string;
+}
+
 const cookies = new Cookies();
 
-export const TemplatesApi = (): Promise<AxiosResponse<oUsers>> => {
+export const TemplatesApi = (): Promise<AxiosResponse<ITemplate[]>> => {
     const token = cookies.get('token');
     return Api.get(`/templates`, { headers: { Authorization: `Bearer ${token}` } });
 };
