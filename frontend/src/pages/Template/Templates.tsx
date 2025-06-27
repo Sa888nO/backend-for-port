@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { TemplatesApi } from '../../api/getTemplates';
 import { Link } from 'react-router-dom';
-import { Button, Spin, Table, Tag } from 'antd';
+import { Button, QRCode, Spin, Table, Tag } from 'antd';
 import { DeleteOutlined, DownloadOutlined, EditOutlined, FileAddOutlined, UserAddOutlined } from '@ant-design/icons';
 import { deleteUserApi } from '../../api/deleteUser';
 import { ColumnsType } from 'antd/es/table';
@@ -9,6 +9,7 @@ import { deleteTemplate } from '../../api/deleteTemplate';
 import { useUser } from '../../contexts/UserContext';
 import { downloadFileApi } from '../../api/downloadFile';
 import { FilesApi } from '../../api/getFIles';
+// import { QRCode } from 'qrcode';
 
 const Delete = ({ id, refetch }: { id: string | number; refetch: any }) => {
     const { mutate: deleteUser, isPending } = useMutation({
@@ -107,6 +108,7 @@ export const Templates = () => {
     ];
     return (
         <div className="tw-flex tw-flex-col tw-gap-2">
+            <QRCode value={`https://localhost:5000/${files?.data[0].path_to_file}`} />
             {user?.role === 'admin' ? (
                 <div>
                     <Link to={'new'}>
