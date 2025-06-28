@@ -3,7 +3,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { Button, Form, Input } from 'antd';
 import { Link, useParams } from 'react-router-dom';
 import { createByTemplateApi } from '../../api/createByTemplate';
-import { TemplateApi } from '../../api/template';
+import { TemplateApi } from '../../api/templateone';
 import { download } from '../../common/download';
 import { Loading } from '../../common/Loading';
 
