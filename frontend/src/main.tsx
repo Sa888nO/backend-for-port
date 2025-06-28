@@ -21,7 +21,13 @@ import { CreateTemplate } from './pages/Template/CreateTemplate';
 import { CreateByTemplate } from './pages/Template/CreateByTemplate';
 import { ResolveRequest } from './pages/Request/ResolveRequest';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            refetchInterval: 7000,
+        },
+    },
+});
 
 createRoot(document.getElementById('root')!).render(
     <ConfigProvider>
