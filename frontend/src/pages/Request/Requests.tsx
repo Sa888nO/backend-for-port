@@ -1,7 +1,3 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { TemplatesApi } from '../../api/getTemplates';
-import { Link } from 'react-router-dom';
-import { Button, Modal, QRCode, Spin, Table, Tag } from 'antd';
 import {
     DeleteOutlined,
     DownloadOutlined,
@@ -12,19 +8,21 @@ import {
     QrcodeOutlined,
     UnlockOutlined,
 } from '@ant-design/icons';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { Button, Modal, QRCode, Table, Tag } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import { deleteTemplate } from '../../api/deleteTemplate';
-import { useUser } from '../../common/UserContext';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { downloadFileApi } from '../../api/downloadFile';
 import { FilesApi } from '../../api/getFIles';
-import { Loading } from '../../common/Loading';
-import { NA } from '../../common/NA';
-import { Request, useDeleteRequest, useRequest, useRequests } from '../../api/request';
-import { useUsers } from '../../api/user';
-import { ModalDOCX } from '../../common/ModalDOCX';
-import { useState } from 'react';
-import { download } from '../../common/download';
 import { useBlockQR, useQRs } from '../../api/qr';
+import { Request, useDeleteRequest, useRequests } from '../../api/request';
+import { useUsers } from '../../api/user';
+import { download } from '../../common/download';
+import { Loading } from '../../common/Loading';
+import { ModalDOCX } from '../../common/ModalDOCX';
+import { NA } from '../../common/NA';
+import { useUser } from '../../common/UserContext';
 // const { user_id, name, description } = req.body;
 // const file = req.file;
 
@@ -59,7 +57,7 @@ export const Requests = () => {
         queryFn: () => FilesApi(),
     });
 
-    const { mutate: block, isPending } = useBlockQR();
+    const { mutate: block } = useBlockQR();
     const { data: qrs, isLoading: isLoadingQrs, refetch: refetchQrs } = useQRs();
     console.log(qrs, ' QR ');
     const { mutate: down } = useMutation({

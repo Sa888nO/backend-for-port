@@ -1,11 +1,10 @@
-import { Outlet, useNavigate } from 'react-router-dom';
 import { Spin } from 'antd';
-import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
-import Cookies from 'universal-cookie';
 import { jwtDecode } from 'jwt-decode';
-import { useUser } from '../common/UserContext';
+import { useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 import { useUser as useUserApi } from '../api/user';
+import { useUser } from '../common/UserContext';
 
 const Loading = () => (
     <div className="tw-flex tw-flex-1 tw-w-full tw-items-center tw-justify-center tw-gap-4 tw-flex-col">

@@ -1,10 +1,9 @@
 import { IdcardOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
-import { useMutation } from '@tanstack/react-query';
 import { Button, Form, Input, notification } from 'antd';
 // import { RegistrationApi, iRegistration } from '../../api/registration';
-import { Link } from 'react-router-dom';
-import { AxiosError } from 'axios';
 import { useForm } from 'antd/es/form/Form';
+import { AxiosError } from 'axios';
+import { Link } from 'react-router-dom';
 import { useRegistration } from '../../api/auth';
 
 type FormValues = {

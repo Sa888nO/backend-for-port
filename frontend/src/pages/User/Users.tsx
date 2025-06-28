@@ -1,8 +1,8 @@
+import { DeleteOutlined, EditOutlined, UserAddOutlined } from '@ant-design/icons';
 import { Button, Table, Tag } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import { DeleteOutlined, EditOutlined, UserAddOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-import { useUsers, useDeleteUser, useUser } from '../../api/user';
+import { useDeleteUser, useUsers } from '../../api/user';
 import { Loading } from '../../common/Loading';
 import { NA } from '../../common/NA';
 

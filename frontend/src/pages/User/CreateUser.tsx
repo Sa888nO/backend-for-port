@@ -1,5 +1,4 @@
 import { IdcardOutlined, LeftOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
-import { useMutation } from '@tanstack/react-query';
 import { Button, Form, Input, Select, Switch } from 'antd';
 import { useForm, useWatch } from 'antd/es/form/Form';
 import { Link, useNavigate } from 'react-router-dom';

@@ -1,12 +1,11 @@
 import { IdcardOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
-import { useMutation, useQuery } from '@tanstack/react-query';
 import { Button, Form, Input, notification, Switch } from 'antd';
-import { useForm, useWatch } from 'antd/es/form/Form';
-import { useUpdateUser, useUser } from '../api/user';
+import { useForm } from 'antd/es/form/Form';
 import { useEffect } from 'react';
+import { useUpdateUser, useUser } from '../api/user';
 // import { UpdateUserApi, iCreateUser } from '../api/updateUser';
-import Cookies from 'universal-cookie';
 import { jwtDecode } from 'jwt-decode';
+import Cookies from 'universal-cookie';
 import { Loading } from '../common/Loading';
 
 type FormValues = { email: string; password: string; role: string; name?: string; surname?: string; is_verified?: boolean };

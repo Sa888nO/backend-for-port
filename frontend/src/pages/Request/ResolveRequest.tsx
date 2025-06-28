@@ -1,12 +1,9 @@
-import { IdcardOutlined, LeftOutlined, LockOutlined, MailOutlined, TagsOutlined, UploadOutlined } from '@ant-design/icons';
-import { useMutation } from '@tanstack/react-query';
-import { Button, Form, Input, Select, Switch, Upload, UploadFile } from 'antd';
-import { useForm, useWatch } from 'antd/es/form/Form';
+import { LeftOutlined } from '@ant-design/icons';
+import { Button, Form, Input, Select } from 'antd';
+import { useForm } from 'antd/es/form/Form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 // import { CreateUserApi, iCreateUser } from '../../api/createUser';
-import { createTemplateApi } from '../../api/createTemplate';
-import { useUser } from '../../common/UserContext';
-import { useCreateRequest, useResolveRequest } from '../../api/request';
+import { useResolveRequest } from '../../api/request';
 
 type FormValues = {
     status: 'accepted' | 'rejected';

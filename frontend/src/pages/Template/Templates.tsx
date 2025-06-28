@@ -1,16 +1,16 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { TemplatesApi } from '../../api/getTemplates';
-import { Link } from 'react-router-dom';
-import { Button, Spin, Table, Tag } from 'antd';
 import { DeleteOutlined, DownloadOutlined, FileAddOutlined } from '@ant-design/icons';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { Button, Table, Tag } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import { Link } from 'react-router-dom';
 import { deleteTemplate } from '../../api/deleteTemplate';
-import { useUser } from '../../common/UserContext';
 import { downloadFileApi } from '../../api/downloadFile';
 import { FilesApi } from '../../api/getFIles';
+import { TemplatesApi } from '../../api/getTemplates';
 import { download } from '../../common/download';
 import { Loading } from '../../common/Loading';
 import { NA } from '../../common/NA';
+import { useUser } from '../../common/UserContext';
 
 const Delete = ({ id, refetch }: { id: string | number; refetch: any }) => {
     const { mutate: deleteUser, isPending } = useMutation({
