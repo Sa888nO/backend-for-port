@@ -1,8 +1,17 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { TemplatesApi } from '../../api/getTemplates';
 import { Link } from 'react-router-dom';
-import { Button, Spin, Table, Tag } from 'antd';
-import { DeleteOutlined, DownloadOutlined, EditOutlined, EyeOutlined, FileAddOutlined } from '@ant-design/icons';
+import { Button, Modal, QRCode, Spin, Table, Tag } from 'antd';
+import {
+    DeleteOutlined,
+    DownloadOutlined,
+    EditOutlined,
+    EyeOutlined,
+    FileAddOutlined,
+    LockOutlined,
+    QrcodeOutlined,
+    UnlockOutlined,
+} from '@ant-design/icons';
 import { ColumnsType } from 'antd/es/table';
 import { deleteTemplate } from '../../api/deleteTemplate';
 import { useUser } from '../../common/UserContext';
@@ -15,6 +24,7 @@ import { useUsers } from '../../api/user';
 import { ModalDOCX } from '../../common/ModalDOCX';
 import { useState } from 'react';
 import { download } from '../../common/download';
+import { useBlockQR, useQRs } from '../../api/qr';
 // const { user_id, name, description } = req.body;
 // const file = req.file;
 
@@ -40,6 +50,7 @@ const StatusTag = ({ status }: { status: Request['status'] }) => {
 
 export const Requests = () => {
     const [selectedDocument, setSelectedDocument] = useState<string | null>(null);
+    const [selectedQR, setSelectedQR] = useState<string | null>(null);
     const { user } = useUser();
     const { data, isLoading, refetch } = useRequests();
     const { data: users, isLoading: isLoadingUsers } = useUsers();
@@ -48,14 +59,18 @@ export const Requests = () => {
         queryFn: () => FilesApi(),
     });
 
+    const { mutate: block, isPending } = useBlockQR();
+    const { data: qrs, isLoading: isLoadingQrs, refetch: refetchQrs } = useQRs();
+    console.log(qrs, ' QR ');
     const { mutate: down } = useMutation({
         mutationFn: (id: string | number) =>
             downloadFileApi(id).then((v) => {
                 download(v.data, 'document.docx');
             }),
     });
+    // const filteredData = data?.filter((;
 
-    if (isLoading || isLoadingUsers || isLoadingFiles) return <Loading title="Загружаем заявки" />;
+    if (isLoading || isLoadingUsers || isLoadingFiles || isLoadingQrs) return <Loading title="Загружаем заявки" />;
 
     if (!data) return null;
 
@@ -94,12 +109,32 @@ export const Requests = () => {
         },
         {
             title: 'QR пропуск',
-            dataIndex: 'user_id',
-            key: 'user_id',
+            dataIndex: 'qr_id',
+            key: 'qr_id',
             // Подумать над этим моментом
-            render: (user_id: number) => {
-                const user = users?.find((u) => u.id === user_id);
-                return user?.name || <NA />;
+            render: (qr_id: number) => {
+                const QR = qrs?.find((q) => q.id === qr_id);
+                if (!QR || !files) return <NA />;
+                const file = files.data.find((f) => f.id === QR?.file_id);
+                if (!file) return <NA />;
+                return (
+                    <div className="tw-flex tw-gap-2">
+                        <Button icon={<QrcodeOutlined />} disabled={QR.is_blocked} onClick={() => setSelectedQR(file.path_to_file)} />
+                        {user?.role === 'admin' && (
+                            <Button
+                                danger={!QR.is_blocked}
+                                icon={!QR.is_blocked ? <LockOutlined /> : <UnlockOutlined />}
+                                onClick={() =>
+                                    block(qr_id, {
+                                        onSuccess: () => refetchQrs(),
+                                    })
+                                }
+                            ></Button>
+                        )}
+                    </div>
+                );
+                // const user = users?.find((u) => u.id === user_id);
+                // return user?.name || <NA />;
             },
         },
         {
@@ -107,8 +142,9 @@ export const Requests = () => {
             dataIndex: 'comment',
             key: 'comment',
             // Подумать над этим моментом
-            render: (comment: string) => {
+            render: (comment: string, { status }) => {
                 if (!comment || comment === '') return <NA />;
+                if (status === 'rejected') return <div className="tw-text-red-500">{comment}</div>;
                 return comment;
             },
         },
@@ -137,36 +173,20 @@ export const Requests = () => {
                 </div>
             ),
         },
-        // {
-        //     title: 'Сущности',
-        //     dataIndex: 'schema',
-        //     key: 'schema',
-        //     render: (schema: Record<string, string>) => {
-        //         const keys = Object.keys(schema);
-        //         if (keys.length === 0) return <NA />;
-        //         return (
-        //             <div className="tw-flex tw-gap-1 tw-flex-wrap">
-        //                 {keys.map((key) => (
-        //                     <Tag color="blue" key={key}>
-        //                         {key}
-        //                     </Tag>
-        //                 ))}
-        //             </div>
-        //         );
-        //     },
-        // },
         {
             title: '',
             dataIndex: 'id',
             key: 'id',
             width: 50,
-            render: (id) => {
+            render: (id, { status }) => {
                 return (
                     <div className="tw-flex tw-gap-2">
-                        <Link to={String(id)}>
-                            <Button icon={<EditOutlined />} />
-                        </Link>
-                        {user?.role === 'admin' ? <Delete refetch={refetch} id={id} /> : null}
+                        {user?.role === 'admin' && (
+                            <Link to={String(id)}>
+                                <Button icon={<EditOutlined />} disabled={status !== 'pending'} />
+                            </Link>
+                        )}
+                        {<Delete refetch={refetch} id={id} />}
                     </div>
                 );
             },
@@ -183,6 +203,21 @@ export const Requests = () => {
                     onCancel: () => setSelectedDocument(null),
                 }}
             />
+            <Modal
+                styles={{
+                    body: {
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    },
+                }}
+                footer={false}
+                centered
+                onCancel={() => setSelectedQR(null)}
+                open={Boolean(selectedQR)}
+            >
+                <QRCode value={`http://5.35.98.185:4444/${selectedQR}`} />
+            </Modal>
             <div>
                 <Link to={'new'}>
                     <Button>
@@ -191,7 +226,13 @@ export const Requests = () => {
                     </Button>
                 </Link>
             </div>
-            <Table dataSource={data} columns={columns} pagination={false} bordered scroll={{ x: true }} />
+            <Table
+                dataSource={user?.role === 'admin' ? data : data.filter((f) => f.user_id === user?.id)}
+                columns={columns}
+                pagination={false}
+                bordered
+                scroll={{ x: true }}
+            />
         </div>
     );
 };

@@ -12,6 +12,7 @@ import templateRouter from './routes/template';
 import { seedAdmin } from './database/models/user';
 import requestRouter from './routes/request';
 import fileRouter from './routes/file';
+import QRRouter from './routes/qr';
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use('/api', userRouter);
 app.use('/api', templateRouter);
 app.use('/api', requestRouter);
 app.use('/api', fileRouter);
+app.use('/api', QRRouter);
 app.use(ErrorMiddleware);
 
 const PORT = process.env.PORT || 3000;

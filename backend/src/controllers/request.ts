@@ -141,6 +141,12 @@ class RequestController {
                 // await user.save();
                 // await RequestModel.update(Number(id), { ...req, status: 'accepted' });
                 // const result = await userService.updateUser(id, req.body);
+            } else {
+                const req = await RequestModel.findByPk(id);
+                if (!req) return;
+                req.status = 'rejected';
+                if (data.comment) req.comment = data.comment;
+                await req.save();
             }
 
             return res.json(200);
