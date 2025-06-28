@@ -45,7 +45,7 @@ export const Login = () => {
                     const { exp } = jwtDecode(token) as Token;
                     cookies.remove('token');
                     cookies.set('token', token, { path: '/', expires: new Date(exp * 1000) });
-                    navigate('/lk');
+                    setTimeout(() => navigate('/lk'), 100);
                 },
             },
         );
