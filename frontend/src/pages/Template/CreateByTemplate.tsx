@@ -1,9 +1,11 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Link, useParams } from 'react-router-dom';
-import { TemplateApi } from '../../api/Template';
+import { TemplateApi } from '../../api/template';
 import { Button, Form, Input, Spin } from 'antd';
 import { LeftOutlined } from '@ant-design/icons';
 import { createByTemplateApi } from '../../api/createByTemplate';
+import { download } from '../../common/download';
+import { Loading } from '../../common/Loading';
 
 export const CreateByTemplate = () => {
     const { id } = useParams();
@@ -17,23 +19,11 @@ export const CreateByTemplate = () => {
     const { mutate, isPending } = useMutation({
         mutationFn: (props: any) =>
             createByTemplateApi(props).then((v) => {
-                const url = window.URL.createObjectURL(v.data);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = 'document.docx';
-                document.body.appendChild(link);
-                link.click();
-                link.remove();
-                window.URL.revokeObjectURL(url);
+                download(v.data, 'document.docx');
             }),
     });
-    if (isLoading)
-        return (
-            <div className="tw-flex tw-items-center tw-justify-center tw-h-full tw-flex-1 tw-flex-col tw-gap-4">
-                <Spin></Spin>
-                <span>Загружаем шаблон</span>
-            </div>
-        );
+
+    if (isLoading) return <Loading title="Загружаем шаблон" />;
 
     if (!data) return null;
     console.log(id);

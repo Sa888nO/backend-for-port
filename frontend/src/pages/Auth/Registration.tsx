@@ -1,10 +1,11 @@
 import { IdcardOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 import { useMutation } from '@tanstack/react-query';
 import { Button, Form, Input, notification } from 'antd';
-import { RegistrationApi, iRegistration } from '../../api/registration';
+// import { RegistrationApi, iRegistration } from '../../api/registration';
 import { Link } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { useForm } from 'antd/es/form/Form';
+import { useRegistration } from '../../api/auth';
 
 type FormValues = {
     name: string;
@@ -17,9 +18,7 @@ type FormValues = {
 export const Registration = () => {
     const [api, contextHolder] = notification.useNotification();
     const [form] = useForm();
-    const { isPending, mutate } = useMutation({
-        mutationFn: async (params: iRegistration) => await RegistrationApi(params),
-    });
+    const { isPending, mutate } = useRegistration();
     const onFinish = ({ email, name, surname, password }: FormValues) =>
         mutate(
             { email, name, surname, password },

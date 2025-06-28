@@ -1,13 +1,14 @@
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
-import { iLogin, LoginApi } from '../../api/login';
+// import { iLogin, LoginApi } from '../../api/login';
 import { notification } from 'antd';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'antd/es/form/Form';
 import { AxiosError } from 'axios';
 import Cookies from 'universal-cookie';
 import { jwtDecode } from 'jwt-decode';
+import { useLogin } from '../../api/auth';
 
 type FormValues = {
     email: string;
@@ -27,9 +28,10 @@ export const Login = () => {
     const navigate = useNavigate();
     const [api, contextHolder] = notification.useNotification();
     const [form] = useForm();
-    const { isPending, mutate } = useMutation({
-        mutationFn: async (params: iLogin) => await LoginApi(params),
-    });
+    const { isPending, mutate } = useLogin();
+    // const { isPending, mutate } = useMutation({
+    //     mutationFn: async (params: iLogin) => await LoginApi(params),
+    // });
     const onFinish = ({ email, password }: FormValues) =>
         mutate(
             { email, password },

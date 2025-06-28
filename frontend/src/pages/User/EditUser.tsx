@@ -3,28 +3,28 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { Button, Form, Input, Spin, Switch } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { UserApi } from '../../api/user';
+// import { UserApi } from '../../api/user';
 import { useEffect } from 'react';
-import { UpdateUserApi, iCreateUser } from '../../api/updateUser';
+// import { UpdateUserApi, iCreateUser } from '../../api/updateUser';
+import { useUpdateUser, useUser } from '../../api/user';
+import { Loading } from '../../common/Loading';
 
 type FormValues = { email: string; password: string; role: string; name?: string; surname?: string; is_verified?: boolean };
 
 export const EditUser = () => {
     const { id } = useParams();
-    const { data, isLoading } = useQuery({
-        queryKey: ['userProfile'],
-        queryFn: () => UserApi(String(id)),
-        staleTime: 0,
-    });
-    if (!id) return null;
+    const userID = Number(id);
+    const { data, isLoading } = useUser(Number(userID));
+
     const [form] = useForm();
     const navigate = useNavigate();
-    const { mutate, isPending } = useMutation({ mutationFn: (props: iCreateUser) => UpdateUserApi(props) });
+    const { mutate, isPending } = useUpdateUser();
     const onFinish = (props: FormValues) => {
+        if (!data) return;
         mutate(
             props.role === 'admin'
-                ? { id: id, email: props.email, password: props.password, role: data!.data.role }
-                : { id: id, ...props, is_verified: !props.is_verified, role: data!.data.role },
+                ? { id: userID, email: props.email, password: props.password, role: data.role }
+                : { id: userID, ...props, is_verified: !props.is_verified, role: data.role },
             {
                 onSuccess: () => navigate('/lk/users'),
             },
@@ -32,16 +32,10 @@ export const EditUser = () => {
     };
 
     useEffect(() => {
-        if (data) form.setFieldsValue({ ...data.data, is_verified: !data.data.is_verified });
+        if (data) form.setFieldsValue({ ...data, is_verified: !data.is_verified });
     }, [data]);
 
-    if (isLoading)
-        return (
-            <div className="tw-flex tw-items-center tw-justify-center tw-h-full tw-flex-1 tw-flex-col tw-gap-4">
-                <Spin></Spin>
-                <span>Загружаем пользователя</span>
-            </div>
-        );
+    if (isLoading) return <Loading title="Загружаем пользователя" />;
 
     if (!data) return null;
 
@@ -84,7 +78,7 @@ export const EditUser = () => {
                     >
                         <Input.Password prefix={<LockOutlined className="tw-mr-1.5" />} placeholder="Повторите ваш пароль" />
                     </Form.Item>
-                    {data.data.role === 'client' ? (
+                    {data.role === 'client' ? (
                         <>
                             <Form.Item label="Имя" name="name" required rules={[{ required: true, message: 'Имя не может быть пустым' }]}>
                                 <Input prefix={<IdcardOutlined className="tw-mr-1.5" />} placeholder="Введите ваше имя"></Input>

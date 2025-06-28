@@ -3,7 +3,7 @@ import { Breadcrumb, Button, Tooltip } from 'antd';
 import { Header } from 'antd/es/layout/layout';
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
-import { useUser } from '../contexts/UserContext';
+import { useUser } from '../common/UserContext';
 
 const cookies = new Cookies();
 

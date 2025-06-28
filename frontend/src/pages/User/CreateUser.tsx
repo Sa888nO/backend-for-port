@@ -3,15 +3,15 @@ import { useMutation } from '@tanstack/react-query';
 import { Button, Form, Input, Select, Switch } from 'antd';
 import { useForm, useWatch } from 'antd/es/form/Form';
 import { Link, useNavigate } from 'react-router-dom';
-import { CreateUserApi, iCreateUser } from '../../api/createUser';
+import { useCreateUser } from '../../api/user';
 
-type FormValues = { email: string; password: string; role: string; name?: string; surname?: string; is_verified?: boolean };
+type FormValues = { email: string; password: string; role: 'admin' | 'client'; name?: string; surname?: string; is_verified?: boolean };
 
 export const CreateUser = () => {
     const [form] = useForm();
     const role = useWatch('role', form);
     const navigate = useNavigate();
-    const { mutate, isPending } = useMutation({ mutationFn: (props: iCreateUser) => CreateUserApi(props) });
+    const { mutate, isPending } = useCreateUser();
     const onFinish = (props: FormValues) => {
         mutate(
             props.role === 'admin'

@@ -1,3 +1,6 @@
+import { useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
+
 import Cookies from 'universal-cookie';
 import { Api } from './index';
 import { AxiosResponse } from 'axios';
@@ -13,7 +16,7 @@ export type oUsers = {
 }[];
 const cookies = new Cookies();
 
-export const UsersApi = (): Promise<AxiosResponse<oUsers>> => {
+export const createTemplateApi = (formData: FormData): Promise<AxiosResponse<oUsers>> => {
     const token = cookies.get('token');
-    return Api.get(`/user/users/`, { headers: { Authorization: `Bearer ${token}` } });
+    return Api.post(`/template`, formData, { headers: { Authorization: `Bearer ${token}` } });
 };

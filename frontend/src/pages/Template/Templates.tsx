@@ -2,13 +2,15 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { TemplatesApi } from '../../api/getTemplates';
 import { Link } from 'react-router-dom';
 import { Button, Spin, Table, Tag } from 'antd';
-import { DeleteOutlined, DownloadOutlined, EditOutlined, FileAddOutlined, UserAddOutlined } from '@ant-design/icons';
-import { deleteUserApi } from '../../api/deleteUser';
+import { DeleteOutlined, DownloadOutlined, FileAddOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/es/table';
 import { deleteTemplate } from '../../api/deleteTemplate';
-import { useUser } from '../../contexts/UserContext';
+import { useUser } from '../../common/UserContext';
 import { downloadFileApi } from '../../api/downloadFile';
 import { FilesApi } from '../../api/getFIles';
+import { download } from '../../common/download';
+import { Loading } from '../../common/Loading';
+import { NA } from '../../common/NA';
 
 const Delete = ({ id, refetch }: { id: string | number; refetch: any }) => {
     const { mutate: deleteUser, isPending } = useMutation({
@@ -32,23 +34,11 @@ export const Templates = () => {
     const { mutate: down } = useMutation({
         mutationFn: (id: string | number) =>
             downloadFileApi(id).then((v) => {
-                const url = window.URL.createObjectURL(v.data);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = 'document.docx';
-                document.body.appendChild(link);
-                link.click();
-                link.remove();
-                window.URL.revokeObjectURL(url);
+                download(v.data, 'document.docx');
             }),
     });
-    if (isLoading)
-        return (
-            <div className="tw-flex tw-items-center tw-justify-center tw-h-full tw-flex-1 tw-flex-col tw-gap-4">
-                <Spin></Spin>
-                <span>Загружаем шаблоны</span>
-            </div>
-        );
+
+    if (isLoading) return <Loading title="Загружаем шаблоны" />;
 
     if (!data) return null;
 
@@ -70,7 +60,7 @@ export const Templates = () => {
             key: 'schema',
             render: (schema: Record<string, string>) => {
                 const keys = Object.keys(schema);
-                if (keys.length === 0) return <span className="tw-text-gray-300">N/A</span>;
+                if (keys.length === 0) return <NA />;
                 return (
                     <div className="tw-flex tw-gap-1 tw-flex-wrap">
                         {keys.map((key) => (

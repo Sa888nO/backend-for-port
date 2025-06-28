@@ -1,9 +1,9 @@
-import { IdcardOutlined, LeftOutlined, LockOutlined, MailOutlined, UploadOutlined } from '@ant-design/icons';
+import { IdcardOutlined, LeftOutlined, LockOutlined, MailOutlined, TagsOutlined, UploadOutlined } from '@ant-design/icons';
 import { useMutation } from '@tanstack/react-query';
 import { Button, Form, Input, Select, Switch, Upload, UploadFile } from 'antd';
 import { useForm, useWatch } from 'antd/es/form/Form';
 import { Link, useNavigate } from 'react-router-dom';
-import { CreateUserApi, iCreateUser } from '../../api/createUser';
+// import { CreateUserApi, iCreateUser } from '../../api/createUser';
 import { createTemplateApi } from '../../api/createTemplate';
 
 type FormValues = {
@@ -51,10 +51,10 @@ export const CreateTemplate = () => {
                         required
                         rules={[{ required: true, message: 'Название шаблона не может быть пустым' }]}
                     >
-                        <Input prefix={<MailOutlined className="tw-mr-1.5" />} placeholder="Введите название шаблона"></Input>
+                        <Input prefix={<TagsOutlined className="tw-mr-1.5" />} placeholder="Введите название шаблона"></Input>
                     </Form.Item>
                     <Form.Item
-                        label="Документ"
+                        label="Размеченный документ в формате docx"
                         name="document"
                         valuePropName="fileList"
                         getValueFromEvent={normFile}

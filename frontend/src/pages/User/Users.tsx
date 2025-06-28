@@ -1,37 +1,25 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { UsersApi } from '../../api/users';
-import { Button, Spin, Table, Tag } from 'antd';
+import { Button, Table, Tag } from 'antd';
 import { ColumnsType } from 'antd/es/table';
-import { DeleteOutlined, EditOutlined, PlusOutlined, UserAddOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, UserAddOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
-import { deleteUserApi } from '../../api/deleteUser';
+import { useUsers, useDeleteUser, useUser } from '../../api/user';
+import { Loading } from '../../common/Loading';
+import { NA } from '../../common/NA';
 
 const Delete = ({ id, refetch }: { id: string | number; refetch: any }) => {
-    const { mutate: deleteUser, isPending } = useMutation({
-        mutationFn: (id: string | number) => deleteUserApi(id),
-        onSuccess: () => refetch(),
-    });
-    return <Button loading={isPending} danger onClick={() => deleteUser(id)} icon={<DeleteOutlined />} />;
+    const { mutate: deleteUser, isPending } = useDeleteUser();
+    const onDelete = () => deleteUser(Number(id), { onSuccess: () => refetch() });
+    return <Button loading={isPending} danger onClick={onDelete} icon={<DeleteOutlined />} />;
 };
 
 export const Users = () => {
-    const { data, isLoading, refetch } = useQuery({
-        queryKey: ['users'],
-        queryFn: UsersApi,
-        refetchOnMount: true,
-    });
+    const { data, isLoading, refetch } = useUsers();
 
-    if (isLoading)
-        return (
-            <div className="tw-flex tw-items-center tw-justify-center tw-h-full tw-flex-1 tw-flex-col tw-gap-4">
-                <Spin></Spin>
-                <span>Загружаем пользователей</span>
-            </div>
-        );
+    if (isLoading) return <Loading title="Загружаем пользователей" />;
 
     if (!data) return null;
 
-    const columns: ColumnsType<(typeof data.data)[number]> = [
+    const columns: ColumnsType<(typeof data)[number]> = [
         {
             title: 'ID',
             dataIndex: 'id',
@@ -55,13 +43,13 @@ export const Users = () => {
             title: 'Имя',
             dataIndex: 'name',
             key: 'name',
-            render: (name: string) => (name ? name : <span className="tw-text-gray-300">N/A</span>),
+            render: (name: string) => (name ? name : <NA />),
         },
         {
             title: 'Фамилия',
             dataIndex: 'surname',
             key: 'surname',
-            render: (surname: string) => (surname ? surname : <span className="tw-text-gray-300">N/A</span>),
+            render: (surname: string) => (surname ? surname : <NA />),
         },
         {
             title: 'Почта подтверждена',
@@ -69,7 +57,7 @@ export const Users = () => {
             key: 'is_verified',
             width: 200,
             render: (is_verified: boolean) => {
-                if (typeof is_verified !== 'boolean') return <span className="tw-text-gray-300">N/A</span>;
+                if (typeof is_verified !== 'boolean') return <NA />;
                 return <Tag color={is_verified ? 'green' : 'red'}>{is_verified ? 'Да' : 'Нет'}</Tag>;
             },
         },
@@ -100,7 +88,7 @@ export const Users = () => {
                     </Button>
                 </Link>
             </div>
-            <Table dataSource={data.data} columns={columns} pagination={false} bordered scroll={{ x: true }} />
+            <Table dataSource={data} columns={columns} pagination={false} bordered scroll={{ x: true }} />
         </div>
     );
 };

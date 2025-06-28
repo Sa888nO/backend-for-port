@@ -1,12 +1,13 @@
 import { IdcardOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Button, Form, Input, notification, Select, Spin, Switch } from 'antd';
+import { Button, Form, Input, notification, Switch } from 'antd';
 import { useForm, useWatch } from 'antd/es/form/Form';
-import { UserApi } from '../api/user';
+import { useUpdateUser, useUser } from '../api/user';
 import { useEffect } from 'react';
-import { UpdateUserApi, iCreateUser } from '../api/updateUser';
+// import { UpdateUserApi, iCreateUser } from '../api/updateUser';
 import Cookies from 'universal-cookie';
 import { jwtDecode } from 'jwt-decode';
+import { Loading } from '../common/Loading';
 
 type FormValues = { email: string; password: string; role: string; name?: string; surname?: string; is_verified?: boolean };
 type Token = {
@@ -21,10 +22,7 @@ const cookies = new Cookies();
 export const Profile = () => {
     const { user_id } = jwtDecode(cookies.get('token')) as Token;
     console.log(user_id);
-    const { data, isLoading, refetch } = useQuery({
-        queryKey: ['userForEdit'],
-        queryFn: () => UserApi(String(user_id)),
-        staleTime: 0,
+    const { data, isLoading, refetch } = useUser(user_id, {
         enabled: !!user_id,
     });
     console.log(user_id);
@@ -32,12 +30,12 @@ export const Profile = () => {
     const [form] = useForm();
     const [api, contextHolder] = notification.useNotification();
     const role = useWatch('role', form);
-    const { mutate, isPending } = useMutation({ mutationFn: (props: iCreateUser) => UpdateUserApi(props) });
+    const { mutate, isPending } = useUpdateUser();
     const onFinish = (props: FormValues) => {
         mutate(
             props.role === 'admin'
-                ? { id: user_id, email: props.email, password: props.password, role: data!.data.role }
-                : { id: user_id, ...props, is_verified: !props.is_verified, role: data!.data.role },
+                ? { id: user_id, email: props.email, password: props.password, role: data!.role }
+                : { id: user_id, ...props, is_verified: !props.is_verified, role: data!.role },
             {
                 onSuccess: () => {
                     refetch();
@@ -48,16 +46,10 @@ export const Profile = () => {
     };
 
     useEffect(() => {
-        if (data) form.setFieldsValue({ ...data.data, is_verified: !data.data.is_verified });
+        if (data) form.setFieldsValue({ ...data, is_verified: !data.is_verified });
     }, [data]);
 
-    if (isLoading)
-        return (
-            <div className="tw-flex tw-items-center tw-justify-center tw-h-full tw-flex-1 tw-flex-col tw-gap-4">
-                <Spin></Spin>
-                <span>Загружаем пользователя</span>
-            </div>
-        );
+    if (isLoading) return <Loading title="Загружаем пользователя" />;
 
     if (!data) return null;
 
@@ -93,7 +85,7 @@ export const Profile = () => {
                     >
                         <Input.Password prefix={<LockOutlined className="tw-mr-1.5" />} placeholder="Повторите ваш пароль" />
                     </Form.Item>
-                    {data.data.role === 'client' ? (
+                    {data.role === 'client' ? (
                         <>
                             <Form.Item label="Имя" name="name" required rules={[{ required: true, message: 'Имя не может быть пустым' }]}>
                                 <Input prefix={<IdcardOutlined className="tw-mr-1.5" />} placeholder="Введите ваше имя"></Input>
