@@ -1,4 +1,4 @@
-import { FileAddOutlined, IdcardOutlined, LogoutOutlined, QrcodeOutlined, SolutionOutlined, TeamOutlined } from '@ant-design/icons';
+import { FileAddOutlined, IdcardOutlined, LogoutOutlined, SolutionOutlined, TeamOutlined } from '@ant-design/icons';
 import { Breadcrumb, Button, Tag, Tooltip } from 'antd';
 import { Header } from 'antd/es/layout/layout';
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
@@ -17,9 +17,6 @@ const getRusPaths = (path: string) => {
     if (path === 'requests/new') return ['Заявки', 'Новая заявка'];
     if (path.includes('requests/')) return ['Заявки', path.split('/').pop()];
     if (path === 'requests') return ['Заявки'];
-    // if (path === 'qrs/new') return ['Пропуска', 'Новый пропуск'];
-    // if (path.includes('qrs/')) return ['Пропуска', path.split('/').pop()];
-    // if (path === 'qrs') return ['Пропуска'];
     if (path === 'templates/new') return ['Шаблоны документов', 'Новый шаблон'];
     if (path.includes('templates/')) return ['Шаблоны документов', path.split('/').pop()];
     if (path === 'templates') return ['Шаблоны документов'];
@@ -52,7 +49,7 @@ export const PageWrapper = () => {
                     })}
                 </Breadcrumb>
                 <Tag className="tw-m-0">
-                    {user?.role === 'admin' ? 'Администратор: ' : 'Пользователь: '}
+                    {user?.role === 'admin' ? 'Администратор: ' : 'Клиент: '}
                     {user?.email}
                 </Tag>
             </Header>
@@ -86,7 +83,7 @@ export const PageWrapper = () => {
                         <Button icon={<LogoutOutlined />} onClick={logout} />
                     </Tooltip>
                 </div>
-                <div className="tw-w-full">
+                <div className="tw-w-full tw-overflow-hidden">
                     <div className="tw-p-2 tw-h-full tw-overflow-auto">
                         <Outlet />
                     </div>

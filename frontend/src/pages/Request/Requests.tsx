@@ -2,18 +2,19 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { TemplatesApi } from '../../api/getTemplates';
 import { Link } from 'react-router-dom';
 import { Button, Spin, Table, Tag } from 'antd';
-import { DeleteOutlined, DownloadOutlined, FileAddOutlined } from '@ant-design/icons';
+import { DeleteOutlined, DownloadOutlined, EditOutlined, EyeOutlined, FileAddOutlined } from '@ant-design/icons';
 import { ColumnsType } from 'antd/es/table';
 import { deleteTemplate } from '../../api/deleteTemplate';
 import { useUser } from '../../common/UserContext';
 import { downloadFileApi } from '../../api/downloadFile';
 import { FilesApi } from '../../api/getFIles';
-import { download } from '../../common/download';
 import { Loading } from '../../common/Loading';
 import { NA } from '../../common/NA';
 import { Request, useDeleteRequest, useRequest, useRequests } from '../../api/request';
 import { useUsers } from '../../api/user';
-
+import { ModalDOCX } from '../../common/ModalDOCX';
+import { useState } from 'react';
+import { download } from '../../common/download';
 // const { user_id, name, description } = req.body;
 // const file = req.file;
 
@@ -26,24 +27,32 @@ const Delete = ({ id, refetch }: { id: string | number; refetch: any }) => {
 const StatusTag = ({ status }: { status: Request['status'] }) => {
     const text = {
         pending: 'Обрабатывается',
-        approved: 'Одобрена',
+        accepted: 'Одобрена',
         rejected: 'Отклонена',
     };
     const color = {
         pending: 'blue',
-        approved: 'green',
+        accepted: 'green',
         rejected: 'red',
     };
     return <Tag color={color[status as keyof typeof color]}>{text[status as keyof typeof text]}</Tag>;
 };
 
 export const Requests = () => {
+    const [selectedDocument, setSelectedDocument] = useState<string | null>(null);
     const { user } = useUser();
-    const { data, isLoading } = useRequests();
+    const { data, isLoading, refetch } = useRequests();
     const { data: users, isLoading: isLoadingUsers } = useUsers();
     const { data: files, isLoading: isLoadingFiles } = useQuery({
         queryKey: ['filesForTemplates'],
         queryFn: () => FilesApi(),
+    });
+
+    const { mutate: down } = useMutation({
+        mutationFn: (id: string | number) =>
+            downloadFileApi(id).then((v) => {
+                download(v.data, 'document.docx');
+            }),
     });
 
     if (isLoading || isLoadingUsers || isLoadingFiles) return <Loading title="Загружаем заявки" />;
@@ -94,14 +103,39 @@ export const Requests = () => {
             },
         },
         {
+            title: 'Комментарий',
+            dataIndex: 'comment',
+            key: 'comment',
+            // Подумать над этим моментом
+            render: (comment: string) => {
+                if (!comment || comment === '') return <NA />;
+                return comment;
+            },
+        },
+        {
             title: 'Документ',
             dataIndex: 'file_id',
             key: 'file_id',
-            // Подумать над этим моментом
-            render: (file_id: number) => {
-                const file = files?.data.find((u) => u.id === file_id);
-                return file?.id || <NA />;
-            },
+            width: 100,
+            render: (file_id: number) => (
+                <div className="tw-flex tw-gap-2">
+                    <Button
+                        icon={<EyeOutlined />}
+                        onClick={() => {
+                            if (!files) return;
+                            const file = files.data.find((u) => u.id === file_id);
+                            if (!file) return;
+                            setSelectedDocument(file.path_to_file);
+                        }}
+                    />
+                    <Button
+                        icon={<DownloadOutlined />}
+                        onClick={() => {
+                            down(files?.data.find((f) => f.id === file_id)?.path_to_file || '');
+                        }}
+                    />
+                </div>
+            ),
         },
         // {
         //     title: 'Сущности',
@@ -121,49 +155,43 @@ export const Requests = () => {
         //         );
         //     },
         // },
-        // {
-        //     title: '',
-        //     dataIndex: 'id',
-        //     key: 'id',
-        //     width: 80,
-        //     render: (id, { file_id }) => {
-        //         return (
-        //             <div className="tw-flex tw-gap-2">
-        //                 <Link to={String(id)}>
-        //                     <Button icon={<FileAddOutlined />} />
-        //                 </Link>
-        //                 <Button
-        //                     icon={<DownloadOutlined />}
-        //                     onClick={() => {
-        //                         down(files?.data.find((f) => f.id === file_id)?.path_to_file || '');
-        //                     }}
-        //                 />
-        //                 {user?.role === 'admin' ? <Delete refetch={refetch} id={id} /> : null}
-        //             </div>
-        //         );
-        //     },
-        // },
+        {
+            title: '',
+            dataIndex: 'id',
+            key: 'id',
+            width: 50,
+            render: (id) => {
+                return (
+                    <div className="tw-flex tw-gap-2">
+                        <Link to={String(id)}>
+                            <Button icon={<EditOutlined />} />
+                        </Link>
+                        {user?.role === 'admin' ? <Delete refetch={refetch} id={id} /> : null}
+                    </div>
+                );
+            },
+        },
     ];
+    console.log(selectedDocument);
     return (
         <div className="tw-flex tw-flex-col tw-gap-2">
-            {user?.role === 'admin' ? (
-                <div>
-                    <Link to={'new'}>
-                        <Button>
-                            <FileAddOutlined />
-                            Создать заявку на пропуск
-                        </Button>
-                    </Link>
-                </div>
-            ) : null}
+            <ModalDOCX
+                title="Предварительный просмотр документа"
+                pathToFile={selectedDocument || ''}
+                modalProps={{
+                    open: Boolean(selectedDocument),
+                    onCancel: () => setSelectedDocument(null),
+                }}
+            />
+            <div>
+                <Link to={'new'}>
+                    <Button>
+                        <FileAddOutlined />
+                        Создать заявку на пропуск
+                    </Button>
+                </Link>
+            </div>
             <Table dataSource={data} columns={columns} pagination={false} bordered scroll={{ x: true }} />
-            {files && files?.data.length > 0 && (
-                <iframe
-                    src={`https://docs.google.com/gview?url=http://5.35.98.185:4444/${files?.data[files.data.length - 1].path_to_file}&embedded=true`}
-                    width="100%"
-                    height="600px"
-                ></iframe>
-            )}
         </div>
     );
 };

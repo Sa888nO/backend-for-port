@@ -27,6 +27,9 @@ export class Request extends Model<iRequest> {
     @Column({ type: DataType.STRING, allowNull: false })
     description!: string;
 
+    @Column({ type: DataType.STRING, allowNull: true })
+    comment!: string;
+
     @Column({ type: DataType.STRING, allowNull: false })
     status!: Status;
 

@@ -30,6 +30,11 @@ export const useRequest = (id: Request['id'], props?: Omit<UseQueryOptions<Reque
         },
         ...props,
     });
-
+type Resolve = {
+    id: Request['id'];
+    comment: string;
+    status: 'accepted' | 'rejected';
+};
 export const useCreateRequest = () => useMutation({ mutationFn: (newRequest: FormData) => AuthApi.post('/requests', newRequest) });
 export const useDeleteRequest = () => useMutation({ mutationFn: (id: Request['id']) => AuthApi.delete(`/requests/${id}`) });
+export const useResolveRequest = () => useMutation({ mutationFn: ({ id, ...props }: Resolve) => AuthApi.put(`/requests/${id}`, props) });

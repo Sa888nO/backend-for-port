@@ -9,6 +9,6 @@ requestRouter.get('/requests', authMiddleware(['admin', 'client']), RequestContr
 requestRouter.get('/requests/:id', authMiddleware(['admin', 'client']), RequestController.getRequestById);
 requestRouter.post('/requests', authMiddleware(['admin', 'client']), upload.single('file'), RequestController.createRequest);
 requestRouter.delete('/requests/:id', authMiddleware(['admin', 'client']), RequestController.deleteRequest);
-// requestRouter.put('/requests/:id', authMiddleware(['admin', 'client']), RequestController.updateRequest);
+requestRouter.put('/requests/:id', authMiddleware(['admin']), RequestController.resolveRequest);
 
 export default requestRouter;

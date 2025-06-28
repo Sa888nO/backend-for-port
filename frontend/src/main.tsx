@@ -10,7 +10,7 @@ import { PageWrapper } from './wrappers/PageWrapper';
 import { UserProvider } from './common/UserContext';
 import { GetCurrentUser } from './wrappers/GetCurrentUser';
 import { Requests } from './pages/Request/Requests';
-import { EditRequests } from './pages/Request/EditRequest';
+// import { EditRequests } from './pages/Request/EditRequest';
 import { CreateRequest } from './pages/Request/CreateRequest';
 import { Users } from './pages/User/Users';
 import { CreateUser } from './pages/User/CreateUser';
@@ -19,6 +19,7 @@ import { Recovery } from './pages/Auth/Recovery';
 import { Templates } from './pages/Template/Templates';
 import { CreateTemplate } from './pages/Template/CreateTemplate';
 import { CreateByTemplate } from './pages/Template/CreateByTemplate';
+import { ResolveRequest } from './pages/Request/ResolveRequest';
 
 const queryClient = new QueryClient();
 
@@ -42,7 +43,7 @@ createRoot(document.getElementById('root')!).render(
                                     <Route path="profile" element={<Profile />} />
                                     <Route path="requests">
                                         <Route index element={<Requests />} />
-                                        <Route path=":id" element={<EditRequests />} />
+                                        <Route path=":id" element={<ResolveRequest />} />
                                         <Route path="new" element={<CreateRequest />} />
                                     </Route>
                                     <Route path="users">
