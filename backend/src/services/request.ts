@@ -1,4 +1,4 @@
-import { iRequest, Request as RequestModel } from '../database/models/request';
+import { iRequest, Request, Request as RequestModel } from '../database/models/request';
 import { Client } from '../database/models/client';
 import { File } from '../database/models/file';
 
@@ -6,7 +6,6 @@ import { File } from '../database/models/file';
 
 class RequestService {
     async getAllRequests() {
-        // Можно добавить include: [Client, File] если нужны связи
         return await RequestModel.findAll();
     }
 
@@ -16,18 +15,11 @@ class RequestService {
         return req;
     }
 
-    // async createTemplate(dto: createTemplateDto) {
-    //     const { name, schema, file_id } = dto;
-    //     if (!name || !schema || !file_id) {
-    //         // throw ApiError.BadRequestError("");
-    //     }
-    //     const newTemplate = new Template({
-    //         schema: schema,
-    //         name: name,
-    //         file_id: file_id,
-    //     });
-    //     await newTemplate.save();
-    // }
+    async createRequest(data: iRequest) {
+        console.log(data);
+        const newRequest = new Request(data);
+        await newRequest.save();
+    }
 
     // async createRequest:({dto}: createRequestDto) {
     //     if ()

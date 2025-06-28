@@ -6,10 +6,11 @@ import { Client } from './models/client';
 import { User } from './models/user';
 import { Template } from './models/template';
 import { Request } from './models/request';
+import { QR } from './models/qr';
 
 const sequelize = new Sequelize({
     ...sequelizeConfig,
-    models: [User, Token, Client, File, Template, Request],
+    models: [User, Token, Client, File, Template, Request, QR],
 });
 
 // Проверка соединения с базой данных

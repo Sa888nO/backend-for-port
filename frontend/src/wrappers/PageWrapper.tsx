@@ -1,5 +1,5 @@
 import { FileAddOutlined, IdcardOutlined, LogoutOutlined, QrcodeOutlined, SolutionOutlined, TeamOutlined } from '@ant-design/icons';
-import { Breadcrumb, Button, Tooltip } from 'antd';
+import { Breadcrumb, Button, Tag, Tooltip } from 'antd';
 import { Header } from 'antd/es/layout/layout';
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
@@ -17,9 +17,9 @@ const getRusPaths = (path: string) => {
     if (path === 'requests/new') return ['Заявки', 'Новая заявка'];
     if (path.includes('requests/')) return ['Заявки', path.split('/').pop()];
     if (path === 'requests') return ['Заявки'];
-    if (path === 'qrs/new') return ['Пропуска', 'Новый пропуск'];
-    if (path.includes('qrs/')) return ['Пропуска', path.split('/').pop()];
-    if (path === 'qrs') return ['Пропуска'];
+    // if (path === 'qrs/new') return ['Пропуска', 'Новый пропуск'];
+    // if (path.includes('qrs/')) return ['Пропуска', path.split('/').pop()];
+    // if (path === 'qrs') return ['Пропуска'];
     if (path === 'templates/new') return ['Шаблоны документов', 'Новый шаблон'];
     if (path.includes('templates/')) return ['Шаблоны документов', path.split('/').pop()];
     if (path === 'templates') return ['Шаблоны документов'];
@@ -51,7 +51,10 @@ export const PageWrapper = () => {
                         return <Breadcrumb.Item>{path}</Breadcrumb.Item>;
                     })}
                 </Breadcrumb>
-                <div className="tw-text-l tw-leading-6">{user?.name}</div>
+                <Tag className="tw-m-0">
+                    {user?.role === 'admin' ? 'Администратор: ' : 'Пользователь: '}
+                    {user?.email}
+                </Tag>
             </Header>
             <div className="tw-flex tw-flex-1 tw-overflow-hidden">
                 <div className="tw-w-10 tw-py-2 tw-border-r tw-flex tw-justify-between tw-items-center tw-flex-col tw-flex-shrink-0">
@@ -71,11 +74,6 @@ export const PageWrapper = () => {
                         <Tooltip overlay="Заявки" placement="right">
                             <NavLink to={'/lk/requests'}>
                                 <Button icon={<SolutionOutlined />} />
-                            </NavLink>
-                        </Tooltip>
-                        <Tooltip overlay="Пропуска" placement="right">
-                            <NavLink to={'/lk/qrs'}>
-                                <Button icon={<QrcodeOutlined />} />
                             </NavLink>
                         </Tooltip>
                         <Tooltip overlay="Шаблоны документов" placement="right">

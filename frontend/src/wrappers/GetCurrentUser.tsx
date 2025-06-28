@@ -47,6 +47,7 @@ export const GetCurrentUser = () => {
             id: data.id,
             name: data.role === 'admin' ? 'Admin' : `${data.name} ${data.surname}`,
             role: data.role,
+            email: data.email,
         });
     }, [data]);
 

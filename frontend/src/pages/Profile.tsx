@@ -29,7 +29,6 @@ export const Profile = () => {
     if (!user_id) return null;
     const [form] = useForm();
     const [api, contextHolder] = notification.useNotification();
-    const role = useWatch('role', form);
     const { mutate, isPending } = useUpdateUser();
     const onFinish = (props: FormValues) => {
         mutate(
