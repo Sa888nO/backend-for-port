@@ -1,15 +1,11 @@
 services:
-  # frontend:
-  #   stdin_open: true
-  #   container_name: frontend
-  #   build: ./frontend
-  #   ports:
-  #     - 80:80
-  #   restart: always
-  #   develop:
-  #     watch:
-  #       - path: ./frontend
-  #         action: rebuild
+  frontend:
+    stdin_open: true
+    container_name: frontend
+    build: ./frontend
+    ports:
+      - 80:80
+    restart: always
 
   backend:
     build: ./backend
