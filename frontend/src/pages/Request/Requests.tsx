@@ -218,7 +218,7 @@ export const Requests = () => {
             </Modal>
             <div>
                 <Link to={'new'}>
-                    <Button>
+                    <Button className = "tw-w tw-bg-custom-blue tw-text-white">
                         <FileAddOutlined />
                         Создать заявку на пропуск
                     </Button>

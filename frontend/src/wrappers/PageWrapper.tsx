@@ -41,7 +41,7 @@ export const PageWrapper = () => {
                     {pathsArray.map((path, index) => {
                         if (pathsArray.length > 1 && index === 0)
                             return (
-                                <Breadcrumb.Item>
+                                <Breadcrumb.Item className=''>
                                     <Link to={parts.split('/')[0]}>{path}</Link>
                                 </Breadcrumb.Item>
                             );

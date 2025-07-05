@@ -82,7 +82,7 @@ export const Users = () => {
         <div className="tw-flex tw-flex-col tw-gap-2">
             <div>
                 <Link to={'new'}>
-                    <Button>
+                    <Button className = "tw-w tw-bg-custom-blue hover:tw-bg-blue-100 tw-text-white">
                         <UserAddOutlined />
                         Добавить пользователя
                     </Button>

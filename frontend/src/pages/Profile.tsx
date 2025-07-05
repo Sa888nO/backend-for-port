@@ -96,7 +96,7 @@ export const Profile = () => {
                             </Form.Item>
                         </>
                     ) : null}
-                    <Button loading={isPending} htmlType="submit" className="tw-w-full" type="primary">
+                    <Button loading={isPending} htmlType="submit" className="tw-w-full tw-bg-custom-blue hover:tw-bg-blue-50 tw-text-white" type="primary">
                         Обновить информацию
                     </Button>
                 </Form>

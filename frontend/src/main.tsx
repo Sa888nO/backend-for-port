@@ -30,7 +30,14 @@ const queryClient = new QueryClient({
 });
 
 createRoot(document.getElementById('root')!).render(
-    <ConfigProvider>
+    <ConfigProvider theme={{
+        components: {
+            Button: {
+                colorPrimary: '#336dac',
+                colorPrimaryHover: '#2662a2',
+            }
+        }
+    }}>
         <QueryClientProvider client={queryClient}>
             <UserProvider>
                 <BrowserRouter>

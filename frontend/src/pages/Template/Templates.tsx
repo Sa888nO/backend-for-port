@@ -100,7 +100,7 @@ export const Templates = () => {
             {user?.role === 'admin' ? (
                 <div>
                     <Link to={'new'}>
-                        <Button>
+                        <Button className="tw-w tw-bg-custom-blue hover:tw-bg-blue-100 tw-text-white">
                             <FileAddOutlined />
                             Добавить шаблон
                         </Button>

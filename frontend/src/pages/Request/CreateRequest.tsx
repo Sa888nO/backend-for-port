@@ -52,23 +52,23 @@ export const CreateRequest = () => {
             <div className="tw-flex tw-justify-center tw-items-center">
                 <Form form={form} onFinish={onFinish} layout="vertical" variant="outlined" className="tw-w-1/2 tw-max-w-80">
                     <Form.Item
-                        label="Название шаблона"
+                        label="Название заявки"
                         name="name"
                         required
-                        rules={[{ required: true, message: 'Название шаблона не может быть пустым' }]}
+                        rules={[{ required: true, message: 'Название заявки не может быть пустым' }]}
                     >
-                        <Input prefix={<TagsOutlined className="tw-mr-1.5" />} placeholder="Введите название шаблона"></Input>
+                        <Input prefix={<TagsOutlined className="tw-mr-1.5" />} placeholder="Введите название заявки"></Input>
                     </Form.Item>
                     <Form.Item
-                        label="Описание шаблона"
+                        label="Описание заявки"
                         name="description"
                         // required
                         // rules={[{ required: true, message: 'Название шаблона не может быть пустым' }]}
                     >
-                        <Input.TextArea placeholder="Введите название шаблона"></Input.TextArea>
+                        <Input.TextArea placeholder="Введите название заявки"></Input.TextArea>
                     </Form.Item>
                     <Form.Item
-                        label="Размеченный документ в формате docx"
+                        label="Прикрепите шаблон (формат - docx) "
                         name="document"
                         valuePropName="fileList"
                         getValueFromEvent={normFile}
@@ -85,7 +85,7 @@ export const CreateRequest = () => {
                             </Button>
                         </Upload>
                     </Form.Item>
-                    <Button loading={isPending} htmlType="submit" className="tw-w-full" type="primary">
+                    <Button loading={isPending} htmlType="submit" className="tw-w-full tw-bg-custom-blue hover:tw-bg-blue-700 tw-text-white" type="primary">
                         Создать
                     </Button>
                 </Form>

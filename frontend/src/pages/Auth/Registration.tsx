@@ -71,7 +71,7 @@ export const Registration = () => {
                     >
                         <Input.Password prefix={<LockOutlined className="tw-mr-1.5" />} placeholder="Повторите ваш пароль" />
                     </Form.Item>
-                    <Button loading={isPending} htmlType="submit" className="tw-w-full" type="primary">
+                    <Button loading={isPending} htmlType="submit" className="tw-w-full tw-bg-custom-blue hover:tw-bg-blue-700 tw-text-white" type="primary">
                         Зарегистрироваться
                     </Button>
                 </Form>

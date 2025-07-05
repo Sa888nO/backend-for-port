@@ -3,7 +3,7 @@ import { Button, Form, Input } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 // import { iLogin, LoginApi } from '../../api/login';
 import { notification } from 'antd';
-import { useMutation } from '@tanstack/react-query';
+//import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'antd/es/form/Form';
 import { AxiosError } from 'axios';
 import Cookies from 'universal-cookie';
@@ -71,7 +71,7 @@ export const Login = () => {
                     >
                         <Input.Password prefix={<LockOutlined className="tw-mr-1.5" />} placeholder="Введите ваш пароль"></Input.Password>
                     </Form.Item>
-                    <Button loading={isPending} htmlType="submit" className="tw-w-full" type="primary">
+                    <Button loading={isPending} htmlType="submit" className="tw-w-full tw-bg-custom-blue hover:tw-bg-blue-700 tw-text-white" type="primary">
                         Войти
                     </Button>
                 </Form>

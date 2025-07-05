@@ -3,7 +3,11 @@ export default {
   prefix: "tw-",
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'custom-blue': '#336dac',
+      },
+    },
   },
   plugins: [],
 };

@@ -1,6 +1,6 @@
 import { IdcardOutlined, LeftOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { Button, Form, Input, Spin, Switch } from 'antd';
+//import { useMutation, useQuery } from '@tanstack/react-query';
+import { Button, Form, Input, Switch } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 // import { UserApi } from '../../api/user';
@@ -91,7 +91,7 @@ export const EditUser = () => {
                             </Form.Item>
                         </>
                     ) : null}
-                    <Button loading={isPending} htmlType="submit" className="tw-w-full" type="primary">
+                    <Button loading={isPending} htmlType="submit" className="tw-w-full tw-bg-custom-blue hover:tw-bg-blue-100 tw-text-white" type="primary">
                         Обновить информацию
                     </Button>
                 </Form>
