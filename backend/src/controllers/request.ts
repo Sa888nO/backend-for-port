@@ -7,6 +7,8 @@ import { iRequest, Request as RequestModel } from '../database/models/request';
 import { Client } from '../database/models/client';
 import { File } from '../database/models/file';
 import { QR } from '../database/models/qr';
+import mail from '../services/mail';
+import { User } from '../database/models/user';
 
 const fs = require('fs');
 const path = require('path');
@@ -83,16 +85,6 @@ class RequestController {
         }
     }
 
-    // async updateRequest(req: Request, res: Response, next: NextFunction) {
-    //     try {
-    //         const id = Number(req.params.id);
-    //         const result = await requestService.updateRequest(id, req.body);
-    //         return res.json(result);
-    //     } catch (e) {
-    //         next(e);
-    //     }
-    // }
-
     async deleteRequest(req: Request, res: Response, next: NextFunction) {
         try {
             const id = Number(req.params.id);
@@ -109,6 +101,8 @@ class RequestController {
             if (data.status === 'accepted') {
                 const req = await RequestModel.findByPk(id);
                 if (!req) return;
+                const user = await User.findByPk(req.user_id);
+                if (!user) return;
                 const file = await File.findByPk(req.file_id);
                 if (!file) return;
                 const originalPath = file.path_to_file; // путь к исходному файлу
@@ -125,28 +119,21 @@ class RequestController {
                     is_blocked: false,
                 });
                 await qr.save();
-
-                // const newFile = await File.create({ ...file, path_to_file: outputPath });
-
-                // const user = await User.findByPk(id);
-                // if (!user) return { error: 'Пользователь не найден' };
-
-                // Обновляем email и пароль, если переданы
+                mail.sendResolve(user.email, req.name, true);
                 req.status = 'accepted';
                 if (data.comment) req.comment = data.comment;
                 req.qr_id = qr.id;
 
                 await req.save();
-
-                // await user.save();
-                // await RequestModel.update(Number(id), { ...req, status: 'accepted' });
-                // const result = await userService.updateUser(id, req.body);
             } else {
                 const req = await RequestModel.findByPk(id);
                 if (!req) return;
+                const user = await User.findByPk(req.user_id);
+                if (!user) return;
                 req.status = 'rejected';
                 if (data.comment) req.comment = data.comment;
                 await req.save();
+                mail.sendResolve(user.email, req.name, false);
             }
 
             return res.json(200);

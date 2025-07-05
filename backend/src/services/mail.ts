@@ -54,6 +54,17 @@ class MailService {
             `,
         });
     }
+
+    async sendResolve(target: string, requestName: string, resolveStatus: boolean) {
+        await transporter.sendMail({
+            from: 'vladikavkaz.port.service@gmail.com',
+            to: target,
+            subject: 'Ответ по заявке',
+            html: `
+                <h2>Заявка ${requestName}: ${resolveStatus ? 'Одобрена' : 'Отклонена'}</h2>
+            `,
+        });
+    }
 }
 
 export default new MailService();
