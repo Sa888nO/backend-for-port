@@ -8,8 +8,8 @@ const sequelizeConfig: Omit<SequelizeOptions, 'models'> = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     sync: {
-        alter: true,
-        // force: true,
+        // alter: true,
+        force: true,
     },
 };
 
